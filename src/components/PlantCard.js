@@ -1,12 +1,16 @@
 import React, { useState } from "react";
 // import PlantList from "./PlantList";
 
-function PlantCard({plant}) {
+function PlantCard({plant, handleDelete}) {
 
   const [toggle, setToggle] = useState(true);
 
   function handleClick() {
     setToggle((toggle) => !toggle);
+  }
+
+  function handleClickDelete() {
+    handleDelete(plant.id);
   }
 
   return (
@@ -19,6 +23,7 @@ function PlantCard({plant}) {
       ) : (
         <button onClick={handleClick}>Out of Stock</button>
       )}
+      <button id={plant.id} onClick={handleClickDelete}>DELETE</button>
     </li>
   );
 }

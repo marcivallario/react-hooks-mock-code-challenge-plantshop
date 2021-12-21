@@ -19,8 +19,7 @@ function PlantPage() {
     .then(data => setPlants(data))
   }, [])
 
-  let plantsToDisplay = [...plants]
-  plantsToDisplay = plantsToDisplay.filter(plant => plant.name.includes(search) || plant.name.toLowerCase().includes(search) || plant.name.toUpperCase().includes(search))
+  let plantsToDisplay = plants.filter(plant => plant.name.includes(search) || plant.name.toLowerCase().includes(search) || plant.name.toUpperCase().includes(search))
 
   function onAddPlant(newPlantObj) {
     fetch('http://localhost:6001/plants', {
@@ -35,13 +34,26 @@ function PlantPage() {
         const newPlantArr = [...plants, data]
         setPlants(newPlantArr);
       })
+    setNewPlant({
+      name: '',
+      price: 0,
+      image: ''
+    })
     }
+
+  function onDeletePlant(id) {
+    console.log(id);
+    fetch(`http://localhost:6001/plants/${id}`, {
+      method: 'DELETE'
+    })
+    setPlants(plants.filter(plant => plant.id !== id))
+  }
 
   return (
     <main> 
       <NewPlantForm newPlant={newPlant} setNewPlant={setNewPlant} onAddPlant={onAddPlant}/>
       <Search search={search} setSearch={setSearch}/>
-      <PlantList plantsToDisplay = {plantsToDisplay} />
+      <PlantList plantsToDisplay={plantsToDisplay} handleDelete={onDeletePlant}/>
     </main>
   );
 }
